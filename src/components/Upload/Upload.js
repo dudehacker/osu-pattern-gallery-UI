@@ -32,15 +32,15 @@ const Upload = () => {
       <Dialog onClose={handleClickOpen} open={open}>
         <DialogTitle>Submit New Pattern</DialogTitle>
         <TextField
-          id="pattern-title"
-          label="Title"
-          placeholder="Title"
+          id="pattern-difficulty"
+          label="Difficulty"
+          placeholder="Difficulty"
           variant="outlined"
         />
         <TextField
           id="pattern-map"
-          label="Map"
-          placeholder="Map"
+          label="Map Link"
+          placeholder="Map Link"
           variant="outlined"
         />
         <TextField
@@ -51,13 +51,13 @@ const Upload = () => {
         />
         <TextField
           id="pattern-timestamp"
-          label="Time Stamp"
-          placeholder="Time Stamp"
+          label="Timestamp"
+          placeholder="Timestamp"
           variant="outlined"
         />
         <TextField
-          id="pattern-comments"
-          label="Comments"
+          id="pattern-description"
+          label="Description"
           variant="outlined"
           multiline
           maxRows={Infinity}
