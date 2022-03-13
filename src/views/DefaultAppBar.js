@@ -1,10 +1,21 @@
-import React from "react";
-import { AppBar, Toolbar, IconButton, Box } from "@mui/material";
+import React, { useState } from "react";
+import { AppBar, Toolbar, IconButton, Box, Alert, AlertTitle } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Upload } from "../components/Upload/Upload";
+import CloseIcon from '@mui/icons-material/Close';
 
 const DefaultAppBar = () => {
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
+
+  const handleAlertOpen = (successMsg) =>{
+    if (successMsg){
+      setOpenAlert(true)
+      setAlertMsg(successMsg)
+    } 
+  }
+
   return (
     <AppBar className="h-16" position="fixed" color="secondary">
       <Toolbar>
@@ -18,7 +29,7 @@ const DefaultAppBar = () => {
           <MenuIcon />
         </IconButton>
         <Box className="grow" />
-        <Upload />
+        <Upload handleUpload={handleAlertOpen}/>
         <Box className="xs:none md:flex space-x-4">
           <IconButton
             size="large"
@@ -30,7 +41,21 @@ const DefaultAppBar = () => {
           </IconButton>
         </Box>
       </Toolbar>
+      {openAlert ? <Alert action={
+      <IconButton aria-label="close"
+      color="inherit"
+      size="small"
+      onClick={() => {
+        setOpenAlert(false);
+      }}>
+      <CloseIcon fontSize="inherit" />
+      </IconButton>
+    }>
+      <AlertTitle>Error</AlertTitle>
+      {alertMsg}
+    </Alert> : null}
     </AppBar>
+
   );
 };
 
