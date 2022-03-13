@@ -51,7 +51,7 @@ const DefaultAppBar = () => {
       <CloseIcon fontSize="inherit" />
       </IconButton>
     }>
-      <AlertTitle>Error</AlertTitle>
+      <AlertTitle>Success</AlertTitle>
       {alertMsg}
     </Alert> : null}
     </AppBar>
