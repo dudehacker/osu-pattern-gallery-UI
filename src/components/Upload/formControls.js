@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import routes from "../../api";
+import routes from "../../service/api";
 
 const PostForm = async (values, successCallback, errorCallback) => {
   axios
@@ -11,13 +11,13 @@ const PostForm = async (values, successCallback, errorCallback) => {
     })
     .catch((error) => {
       // Error
-      console.log(error)
+      console.log(error);
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         console.log(error.response.data);
         console.log(error.response.status);
-      } 
+      }
       errorCallback(error.response.data);
     });
 };
@@ -69,7 +69,7 @@ export const useFormControls = (handleAlertOpen) => {
       formSubmitted: true,
       success: true,
     });
-    handleAlertOpen()
+    handleAlertOpen();
   };
 
   const handleError = (errMsg) => {
@@ -78,7 +78,7 @@ export const useFormControls = (handleAlertOpen) => {
       formSubmitted: true,
       success: false,
     });
-    handleAlertOpen(errMsg)
+    handleAlertOpen(errMsg);
   };
 
   const formIsValid = (fieldValues = values) => {
