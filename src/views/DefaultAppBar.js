@@ -7,6 +7,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
 import routes from "../api"
 
+const authUrl = `${process.env.REACT_APP_OSU_AUTH}?client_id=${process.env.REACT_APP_OSU_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_HOST}%2Fauth%2Fosu%2Fcallback&scope=friends.read+identify+public`
+
 const DefaultAppBar = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
@@ -46,6 +48,7 @@ const DefaultAppBar = () => {
         <Box className="grow" />
         <Upload handleUpload={handleAlertOpen}/>
         <Button onClick={login}>Login</Button>
+        <a href={authUrl}>Login</a>
         <Box className="xs:none md:flex space-x-4">
           <IconButton
             size="large"
