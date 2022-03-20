@@ -45,8 +45,9 @@ const DefaultAppBar = () => {
         </IconButton>
         <Box className="grow" />
         <Upload handleUpload={handleAlertOpen} />
-        <Button href={authUrl}>Login</Button>
-        <Button onClick={test}>Test</Button>
+        <Button onClick={test}>Login</Button>
+        <a href="http://localhost:3000/auth/login">Login BE</a>
+        <a href={authUrl}>Login</a>
         <Box className="xs:none md:flex space-x-4">
           <IconButton
             size="large"
