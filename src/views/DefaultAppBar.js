@@ -18,8 +18,17 @@ const DefaultAppBar = () => {
     } 
   }
 
+  const params = {
+    params: {
+      client_id: process.env.REACT_APP_OSU_CLIENT_ID,
+      response_type: "code",
+      redirect_uri: process.env.REACT_APP_HOST+"/auth/osu/callback",
+      scope: "friends.read identify public"
+    }
+  }
+
   const login = () =>{
-    axios.post(routes.login)
+    axios.get(process.env.REACT_APP_OSU_AUTH, params).then( res => console.log(res))
   }
 
   return (
