@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, IconButton, Box, Alert, AlertTitle } from "@mui/material";
+import { AppBar, Toolbar, IconButton, Button, Box, Alert, AlertTitle } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Upload } from "../components/Upload/Upload";
 import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
+import routes from "../api"
 
 const DefaultAppBar = () => {
   const [openAlert, setOpenAlert] = useState(false);
@@ -14,6 +16,10 @@ const DefaultAppBar = () => {
       setOpenAlert(true)
       setAlertMsg(successMsg)
     } 
+  }
+
+  const login = () =>{
+    axios.post(routes.login)
   }
 
   return (
@@ -30,6 +36,7 @@ const DefaultAppBar = () => {
         </IconButton>
         <Box className="grow" />
         <Upload handleUpload={handleAlertOpen}/>
+        <Button onClick={login}>Login</Button>
         <Box className="xs:none md:flex space-x-4">
           <IconButton
             size="large"

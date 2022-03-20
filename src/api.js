@@ -5,7 +5,9 @@ if (process.env.NODE_ENV === "production"){
 }
 
 const routes = {
-    upload: `${apiHost}/api/pattern`
+    upload: `${apiHost}/api/pattern`,
+    login: `${apiHost}/auth/login`,
+    logout: `${apiHost}/auth/logout`
 }
 
 export default routes;
