@@ -26,7 +26,7 @@ const Pattern = () => {
     <Card className="bg-black f-full w-full flex-1" onClick={handleDialog}>
       <CardMedia
         component="img"
-        image="https://avatars.githubusercontent.com/u/20363793?v=4"
+        image="https://i.imgur.com/17Kjrwb.jpg"
         alt="pattern-id"
       />
 
@@ -35,7 +35,7 @@ const Pattern = () => {
           <CardHeader title="Pattern Title" subheader="submission date" />
           <CardMedia
             component="img"
-            image="https://avatars.githubusercontent.com/u/20363793?v=4"
+            image="https://i.imgur.com/17Kjrwb.jpg"
             alt="pattern-id"
           />
           <CardContent> Pattern Description </CardContent>
