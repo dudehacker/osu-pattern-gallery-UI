@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -9,16 +9,16 @@ import {
   AlertTitle,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Upload } from "../components/Upload/Upload";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
-
-const authUrl = `${process.env.REACT_APP_OSU_AUTH}?client_id=${process.env.REACT_APP_OSU_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_HOST}%2Fauth%2Fosu%2Fcallback&scope=friends.read+identify+public`;
+import routes from "../api";
+import Cookies from "js-cookie";
 
 const DefaultAppBar = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
+  const [username, setUserName] = useState(Cookies.get("username"));
+  const [avatar, setAvatar] = useState(Cookies.get("avatar"));
 
   const handleAlertOpen = (successMsg) => {
     if (successMsg) {
@@ -27,8 +27,9 @@ const DefaultAppBar = () => {
     }
   };
 
-  const test = () => {
-    axios.post("http://localhost:3000/auth/login");
+  const logout = () => {
+    Cookies.remove("username");
+    Cookies.remove("avatar");
   };
 
   return (
@@ -45,18 +46,23 @@ const DefaultAppBar = () => {
         </IconButton>
         <Box className="grow" />
         <Upload handleUpload={handleAlertOpen} />
-        <Button onClick={test}>Login</Button>
-        <a href="http://localhost:3000/auth/login">Login BE</a>
-        <a href={authUrl}>Login</a>
+        {username ? (
+          <Fragment>
+            <img src={avatar} alt="avatar" style={{ height: "40px" }} />
+            <a href={routes.logout} onClick={logout}>
+              Logout
+            </a>
+          </Fragment>
+        ) : (
+          <a href={routes.login}>Login</a>
+        )}
         <Box className="xs:none md:flex space-x-4">
           <IconButton
             size="large"
             edge="end"
             aria-label="account of current user"
             color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
+          ></IconButton>
         </Box>
       </Toolbar>
       {openAlert ? (
