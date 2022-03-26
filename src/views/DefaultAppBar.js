@@ -11,7 +11,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { Upload } from "../components/Upload/Upload";
 import CloseIcon from "@mui/icons-material/Close";
-import routes from "../api";
+import routes from "../service/api";
 import Cookies from "js-cookie";
 
 const DefaultAppBar = () => {

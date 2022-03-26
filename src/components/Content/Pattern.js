@@ -14,11 +14,30 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
-const Pattern = () => {
+const formatLink = (text) => {
+  return "osu://edit/" + text;
+}
+
+const formatCardTitle = (beatmap) => {
+  return `${beatmap.artist} - ${beatmap.title} [${beatmap.version}] mapped by ${beatmap.creator}`
+}
+
+const formatUserProfile = (osuId) => {
+  return `https://osu.ppy.sh/users/${osuId}`
+}
+
+const getBeatmapUrl = (beatmap) => {
+    return `https://osu.ppy.sh/beatmapsets/${beatmap.beatmapSetId}#mania/${beatmap.id}`
+}
+
+const openMapLink = (url) =>{
+    window.open(url, '_blank').focus();
+}
+
+const Pattern = (props) => {
   const [open, setOpen] = useState(false);
 
   const handleDialog = () => {
-    console.log(open);
     setOpen(!open);
   };
 
@@ -26,19 +45,29 @@ const Pattern = () => {
     <Card className="bg-black f-full w-full flex-1" onClick={handleDialog}>
       <CardMedia
         component="img"
-        image="https://i.imgur.com/17Kjrwb.jpg"
+        image={props.data.imageUrl}
         alt="pattern-id"
       />
 
       <Dialog open={open}>
         <Card className="bg-black f-full w-full flex-1">
-          <CardHeader title="Pattern Title" subheader="submission date" />
+          <CardHeader 
+          // TODO: need open link in new tab, but this auto open all even without click
+            // title={<div onclick={openMapLink(getBeatmapUrl(props.data.beatmap))}>{formatCardTitle(props.data.beatmap)}</div>}
+            title={(<a href={getBeatmapUrl(props.data.beatmap)}>{formatCardTitle(props.data.beatmap)}</a>)} 
+            subheader={"Submission date: " + props.data.p_uploadDate }/>
           <CardMedia
             component="img"
-            image="https://i.imgur.com/17Kjrwb.jpg"
+            image={props.data.imageUrl}
             alt="pattern-id"
           />
-          <CardContent> Pattern Description </CardContent>
+          <CardContent> 
+          <h2>{"Description: " + props.data.description}</h2>
+          <label>Timestamps:</label>
+          {/* this link needs to be styled as a hyperlink, it just looks like normal text */}
+          <div><a style={{color:'inherit'}}  href={formatLink(props.data.osuTimestamps)}>{props.data.osuTimestamps}</a></div>
+          <div><a style={{color:'inherit'}}  href={formatUserProfile(props.data.p_uploadBy.id)}>{"Upload by: " + props.data.p_uploadBy.username}</a></div>
+          </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label="favorite pattern">
               <FavoriteIcon />

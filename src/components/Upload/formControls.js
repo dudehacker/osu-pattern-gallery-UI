@@ -1,10 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import routes from "../../service/api";
+axios.defaults.withCredentials = true;
 
 const PostForm = async (values, successCallback, errorCallback) => {
   axios
-    .post(routes.upload, values)
+    .post(routes.pattern, values)
     .then((res) => {
       console.log(res.data);
       successCallback();

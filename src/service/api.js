@@ -1,11 +1,13 @@
-var apiHost = "http://localhost:3000"
+var apiHost = process.env.REACT_APP_API_HOST
 
 if (process.env.NODE_ENV === "production"){
-    apiHost = "production API"
+    apiHost = process.env.REACT_APP_API_HOST_PROD
 }
 
 const routes = {
-    upload: `${apiHost}/api/pattern`
+    pattern: `${apiHost}/api/pattern`,
+    login: `${apiHost}/auth/login`,
+    logout: `${apiHost}/auth/logout`
 }
 
 export default routes;
