@@ -30,16 +30,20 @@ const getBeatmapUrl = (beatmap) => {
     return `https://osu.ppy.sh/beatmapsets/${beatmap.beatmapSetId}#mania/${beatmap.id}`
 }
 
-const openMapLink = (url) =>{
-    window.open(url, '_blank').focus();
-}
+
 
 const Pattern = (props) => {
   const [open, setOpen] = useState(false);
+  const [mapLink, setMapLink] = useState(getBeatmapUrl(props.data.beatmap));
+  const [uploadByUrl, setUploadByUrl] = useState(formatUserProfile(props.data.p_uploadBy.id));
 
   const handleDialog = () => {
     setOpen(!open);
   };
+
+  const openMapLink = (e) =>{
+    window.open(mapLink, '_blank').focus();
+  }
 
   return (
     <Card className="bg-black f-full w-full flex-1" onClick={handleDialog}>
@@ -53,8 +57,8 @@ const Pattern = (props) => {
         <Card className="bg-black f-full w-full flex-1">
           <CardHeader 
           // TODO: need open link in new tab, but this auto open all even without click
-            // title={<div onclick={openMapLink(getBeatmapUrl(props.data.beatmap))}>{formatCardTitle(props.data.beatmap)}</div>}
-            title={(<a href={getBeatmapUrl(props.data.beatmap)}>{formatCardTitle(props.data.beatmap)}</a>)} 
+            title={<div onClick={openMapLink}>{formatCardTitle(props.data.beatmap)}</div>}
+            // title={(<a href={getBeatmapUrl(props.data.beatmap)}>{formatCardTitle(props.data.beatmap)}</a>)} 
             subheader={"Submission date: " + props.data.p_uploadDate }/>
           <CardMedia
             component="img"
@@ -66,7 +70,7 @@ const Pattern = (props) => {
           <label>Timestamps:</label>
           {/* this link needs to be styled as a hyperlink, it just looks like normal text */}
           <div><a style={{color:'inherit'}}  href={formatLink(props.data.osuTimestamps)}>{props.data.osuTimestamps}</a></div>
-          <div><a style={{color:'inherit'}}  href={formatUserProfile(props.data.p_uploadBy.id)}>{"Upload by: " + props.data.p_uploadBy.username}</a></div>
+          <div><a style={{color:'inherit'}}  href={uploadByUrl}>{"Upload by: " + props.data.p_uploadBy.username}</a></div>
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label="favorite pattern">
