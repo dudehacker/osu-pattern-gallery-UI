@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useFormControls } from "./formControls";
+import Cookies from "js-cookie";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
@@ -49,7 +50,12 @@ const Upload = (props) => {
   };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (Cookies.get("username")){
+      setOpen(true);
+    } else {
+      alert("you must be logged in to upload!")
+    }
+
   };
 
   const handleAlertOpen = (errMsg) => {
