@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import routes from "../../service/api";
 import {
   Card,
   CardHeader,
@@ -10,9 +11,9 @@ import {
   Button,
   DialogActions,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import axios from "axios";
 
 const formatLink = (text) => {
   return "osu://edit/" + text;
@@ -30,30 +31,52 @@ const getBeatmapUrl = (beatmap) => {
     return `https://osu.ppy.sh/beatmapsets/${beatmap.beatmapSetId}#mania/${beatmap.id}`
 }
 
-
-
-const Pattern = (props) => {
-  const [open, setOpen] = useState(false);
+function SimpleDialog(props){
+  const {onClose, open} = props;
+  console.log(open)
   const [mapLink, setMapLink] = useState(getBeatmapUrl(props.data.beatmap));
   const [uploadByUrl, setUploadByUrl] = useState(formatUserProfile(props.data.p_uploadBy.id));
+  const [liked, setLiked] = useState(props.data.liked);
+  const [disliked, setDisliked] = useState(props.data.disliked);
 
-  const handleDialog = () => {
-    setOpen(!open);
+
+  const handleClose = () => {
+    onClose();
   };
 
   const openMapLink = (e) =>{
     window.open(mapLink, '_blank').focus();
-  }
+  };
+
+  
+  const changeLike = () =>{
+    axios.post(routes.pattern+`/${props.data._id}/like`).then(
+      res => {
+        setLiked(!liked);
+        if (disliked){
+          setDisliked(false);
+        }
+      }
+    );
+  };
+
+  const changeDislike = () =>{
+    axios.post(routes.pattern+`/${props.data._id}/dislike`).then(
+      res => {
+        setDisliked(!disliked);
+        if (liked){
+          setLiked(false);
+        }
+      }
+    );
+  };
+
+  let likedClass = liked ? "likedButton" : "normalButton";
+  let dislikedClass = disliked ? "dislikedButton" : "normalButton";
+
 
   return (
-    <Card className="bg-black f-full w-full flex-1" onClick={handleDialog}>
-      <CardMedia
-        component="img"
-        image={props.data.imageUrl}
-        alt="pattern-id"
-      />
-
-      <Dialog open={open}>
+  <Dialog open={open} onClose={handleClose}>
         <Card className="bg-black f-full w-full flex-1">
           <CardHeader 
           // TODO: need open link in new tab, but this auto open all even without click
@@ -73,21 +96,47 @@ const Pattern = (props) => {
           <div><a style={{color:'inherit'}}  href={uploadByUrl}>{"Upload by: " + props.data.p_uploadBy.username}</a></div>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton aria-label="favorite pattern">
-              <FavoriteIcon />
+            <IconButton aria-label="like pattern" onClick={changeLike}>
+              <ThumbUpIcon className={likedClass}/>
             </IconButton>
-            <IconButton aria-label="like pattern">
-              <ThumbUpIcon />
-            </IconButton>
-            <IconButton aria-label="dislike pattern">
-              <ThumbDownIcon />
+            <IconButton aria-label="dislike pattern" onClick={changeDislike}>
+              <ThumbDownIcon className={dislikedClass}/>
             </IconButton>
           </CardActions>
         </Card>
         <DialogActions disableSpacing className="flex justify-between">
-          <Button onClick={handleDialog}>X</Button>
+          <Button onClick={handleClose}>X</Button>
         </DialogActions>
       </Dialog>
+  )
+}
+
+const Pattern = (props) => {
+  const [open, setOpen] = useState(false);
+  console.log(open)
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    console.log("should close")
+    setOpen(false);
+  };
+
+  return (
+    <Card className="bg-black f-full w-full flex-1" onClick={handleClickOpen}>
+      <CardMedia
+        component="img"
+        image={props.data.imageUrl}
+        alt="pattern-id"
+      />
+
+      <SimpleDialog
+        data={props.data}
+        open={open}
+        onClose={handleClose}
+      />
     </Card>
   );
 };
