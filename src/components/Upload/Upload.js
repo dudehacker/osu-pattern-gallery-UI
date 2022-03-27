@@ -11,6 +11,7 @@ import {
   AlertTitle,
   Alert,
   IconButton,
+  Fab,
   //   Modal,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -42,21 +43,18 @@ const inputFieldValues = [
 
 const Upload = (props) => {
   const [open, setOpen] = useState(false);
+  const [notLoggedIn, setNotLoggedIn] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
+
+  const [error, openError] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleClickOpen = () => {
-    if (Cookies.get("username")){
-      setOpen(true);
-    } else {
-      alert("you must be logged in to upload!")
-    }
-
-  };
+  const handleClickOpen = () =>
+    Cookies.get("username") ? setOpen(!open) : setNotLoggedIn(!notLoggedIn);
 
   const handleAlertOpen = (errMsg) => {
     if (errMsg) {
@@ -74,15 +72,26 @@ const Upload = (props) => {
   const { handleInputValue, handleFormSubmit, formIsValid, errors } =
     useFormControls(handleAlertOpen);
 
+  const style = {
+    margin: 0,
+    top: "auto",
+    right: 20,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+  };
+
   return (
     <div>
-      <Button
+      <Fab
         variant="contained"
+        color="primary"
         onClick={handleClickOpen}
-        endIcon={<AddIcon />}
+        style={style}
+        aria-label="upload"
       >
-        Upload
-      </Button>
+        <AddIcon />
+      </Fab>
       <Dialog onClose={handleClickOpen} open={open}>
         <DialogTitle>Submit New Pattern</DialogTitle>
         {openAlert ? (
@@ -134,6 +143,11 @@ const Upload = (props) => {
             <Button onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </form>
+      </Dialog>
+      <Dialog onClose={handleClickOpen} open={notLoggedIn}>
+        <Alert severity="error">
+          You must be logged in to upload a pattern!
+        </Alert>
       </Dialog>
     </div>
   );

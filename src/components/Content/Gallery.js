@@ -1,4 +1,4 @@
-import React , {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Card } from "@mui/material";
 import { Pattern } from "./Pattern";
 import axios from "axios";
@@ -9,9 +9,9 @@ const Gallery = () => {
 
   useEffect(() => {
     async function fetchData() {
-      axios.get(routes.pattern).then(res => {
-        console.log(res)
-        setPatterns(res.data)
+      axios.get(routes.pattern).then((res) => {
+        console.log(res);
+        setPatterns(res.data);
       });
     }
     fetchData();
@@ -21,8 +21,9 @@ const Gallery = () => {
     <Card className="bg-black f-full w-full flex-1 flex pt-4">
       <Grid container spacing={2}>
         <Grid item xs={2}>
-          {patterns.map( pattern => (<Pattern key={pattern._id} data={pattern}/>))}
-          
+          {patterns.map((pattern) => (
+            <Pattern key={pattern._id} data={pattern} />
+          ))}
         </Grid>
       </Grid>
     </Card>

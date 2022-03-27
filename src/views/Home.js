@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "@mui/material";
 import { ContentContainer } from "../components/Content/ContentContainer";
+import { Upload } from "../components/Upload/Upload";
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
       id="main-container"
     >
       <ContentContainer />
+      <Upload />
     </Container>
   );
 };
