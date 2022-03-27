@@ -7,7 +7,7 @@ import {
   Avatar,
   Typography,
 } from "@mui/material";
-import routes from "../service/api";
+import {routes} from "../service/api";
 import Cookies from "js-cookie";
 
 import { LogoutIcon, LoginIcon } from "../components/Icons";

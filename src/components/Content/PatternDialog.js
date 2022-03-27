@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -9,6 +9,7 @@ import {
   Dialog,
   Button,
   DialogActions,
+  Link,
 } from "@mui/material";
 
 import { ThumbUpIcon, ThumbDownIcon } from "../Icons";
@@ -17,49 +18,48 @@ import {
   formatLink,
   formatCardTitle,
   formatUserProfile,
-  getBeatmapUrl,
+  formatDate
 } from "./patternHelper";
 
-import { changeLike, changeDislike } from "../../service/patternService";
+import { changeLike, changeDislike, getPattern } from "../../service/patternService";
 
 const PatternDialog = (props) => {
   const { onClose, open } = props;
-  const [liked, setLiked] = useState(props.data.liked);
-  const [disliked, setDisliked] = useState(props.data.disliked);
-  const [mapLink, setMapLink] = useState(getBeatmapUrl(props.data.beatmap));
-  const [uploadByUrl, setUploadByUrl] = useState(
-    formatUserProfile(props.data.p_uploadBy.id)
-  );
+  const [pattern, setPattern] = useState(props.data);
+
+  async function fetchData() {
+    getPattern(props.data._id).then((res) => {
+      setPattern(res);
+    });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleClose = () => {
     onClose();
   };
 
   const openMapLink = (e) => {
-    window.open(mapLink, "_blank").focus();
+    window.open(pattern.beatmapUrl, "_blank").focus();
   };
 
   const handleLike = () => {
-    changeLike(props.data._id).then(() => {
-      setLiked(!liked);
-      if (disliked) {
-        setDisliked(false);
-      }
+    changeLike(pattern._id).then(() => {
+      fetchData()
     });
   };
 
   const handleDislike = () => {
-    changeDislike(props.data._id).then(() => {
-      setDisliked(!disliked);
-      if (liked) {
-        setLiked(false);
-      }
+    changeDislike(pattern._id).then(() => {
+      fetchData()
     });
   };
 
   const classes = {
-    likedClass: liked ? "likedButton" : "normalButton",
-    dislikedClass: disliked ? "dislikedButton" : "normalButton",
+    likedClass: pattern.liked ? "likedButton" : "normalButton",
+    dislikedClass: pattern.disliked ? "dislikedButton" : "normalButton",
   };
 
   return (
@@ -72,30 +72,35 @@ const PatternDialog = (props) => {
               {formatCardTitle(props.data.beatmap)}
             </div>
           }
-          // title={(<a href={getBeatmapUrl(props.data.beatmap)}>{formatCardTitle(props.data.beatmap)}</a>)}
-          subheader={"Submission date: " + props.data.p_uploadDate}
+          subheader={
+          <div>
+            <p>{"Map ranked: " + formatDate(pattern.beatmap.raw_approvedDate)}</p>
+            <p>{"Pattern uploaded: " + formatDate(pattern.p_uploadDate)}</p>
+            <p>{"Liked: " + pattern.likedBy.length}</p>
+            <p>{"Disliked: " + pattern.dislikedBy.length}</p>
+          </div>}
         />
         <CardMedia
           component="img"
-          image={props.data.imageUrl}
+          image={pattern.imageUrl}
           alt="pattern-id"
         />
         <CardContent>
-          <h2>{"Description: " + props.data.description}</h2>
+          <h2>{"Description: " + pattern.description}</h2>
           <label>Timestamps:</label>
           {/* this link needs to be styled as a hyperlink, it just looks like normal text */}
           <div>
-            <a
-              style={{ color: "inherit" }}
-              href={formatLink(props.data.osuTimestamps)}
+            <Link
+              href={formatLink(pattern.osuTimestamps)}
             >
-              {props.data.osuTimestamps}
-            </a>
+              {pattern.osuTimestamps}
+            </Link>
           </div>
           <div>
-            <a style={{ color: "inherit" }} href={uploadByUrl}>
-              {"Upload by: " + props.data.p_uploadBy.username}
-            </a>
+            <label>Upload by: </label>
+            <Link href={formatUserProfile(pattern.p_uploadBy.id)}>
+              {pattern.p_uploadBy.username}
+            </Link>
           </div>
         </CardContent>
         <CardActions disableSpacing>

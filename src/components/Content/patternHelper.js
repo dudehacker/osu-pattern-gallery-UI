@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const formatLink = (text) => {
   return "osu://edit/" + text;
 };
@@ -14,4 +16,10 @@ const getBeatmapUrl = (beatmap) => {
   return `https://osu.ppy.sh/beatmapsets/${beatmap.beatmapSetId}#mania/${beatmap.id}`;
 };
 
-export { formatLink, formatCardTitle, formatUserProfile, getBeatmapUrl };
+const formatDate = (dateString) => {
+  var date = new Date(dateString);
+  var formatted = moment(date).format('MMMM D, YYYY');
+  return formatted
+}
+
+export { formatLink, formatCardTitle, formatUserProfile, getBeatmapUrl , formatDate};

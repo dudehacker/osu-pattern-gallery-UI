@@ -1,5 +1,22 @@
-import axios from "axios";
-import routes from "./api";
+import {routes,axios} from "./api";
+
+const getPattern = (id) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(routes.pattern + `/${id}`)
+      .then((res) => resolve(res.data))
+      .catch(() => reject(false));
+  });
+}
+
+const getPatterns = () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(routes.pattern)
+      .then((res) => resolve(res.data))
+      .catch(() => reject(false));
+  });
+}
 
 const changeLike = (id) => {
   return new Promise((resolve, reject) => {
@@ -19,4 +36,4 @@ const changeDislike = (id) => {
   });
 };
 
-export { changeLike, changeDislike };
+export { changeLike, changeDislike, getPattern, getPatterns };
