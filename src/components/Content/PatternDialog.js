@@ -18,7 +18,8 @@ import {
   formatUserProfile,
   formatDate,
   calculatePassRates, 
-  calculateLNRates
+  calculateLNRates,
+  formatTimestamps
 } from "./patternHelper";
 
 import { changeLike, changeDislike, getPattern } from "../../service/patternService";
@@ -56,7 +57,7 @@ const PatternDialog = (props) => {
       fetchData()
     });
   };
-  
+
   if (!pattern) return null
 
   const classes = {
@@ -101,7 +102,7 @@ const PatternDialog = (props) => {
             <Link
               href={formatLink(pattern.osuTimestamps)}
             >
-              {pattern.osuTimestamps}
+              {formatTimestamps(pattern.osuTimestamps)}
             </Link>
           </div>
           <div>
