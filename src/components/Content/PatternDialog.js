@@ -41,7 +41,7 @@ const PatternDialog = (props) => {
 
   const handleLike = () => {
     changeLike(props.data._id).then(() => {
-      setLiked(!disliked);
+      setLiked(!liked);
       if (disliked) {
         setDisliked(false);
       }
