@@ -25,7 +25,7 @@ import { changeLike, changeDislike, getPattern } from "../../service/patternServ
 
 const PatternDialog = (props) => {
   const { onClose, open } = props;
-  const [pattern, setPattern] = useState(props.data);
+  const [pattern, setPattern] = useState(null);
 
   async function fetchData() {
     getPattern(props.data._id).then((res) => {
@@ -56,6 +56,8 @@ const PatternDialog = (props) => {
       fetchData()
     });
   };
+  
+  if (!pattern) return null
 
   const classes = {
     likedClass: pattern.liked ? "likedButton" : "normalButton",
@@ -69,7 +71,7 @@ const PatternDialog = (props) => {
           // need make it look like its clickeable
           title={
             <div onClick={openMapLink}>
-              {formatCardTitle(props.data.beatmap)}
+              {formatCardTitle(pattern.beatmap)}
             </div>
           }
           subheader={
