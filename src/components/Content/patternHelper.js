@@ -8,6 +8,10 @@ const formatCardTitle = (beatmap) => {
   return `${beatmap.artist} - ${beatmap.title} [${beatmap.version}] mapped by ${beatmap.creator}`;
 };
 
+const formatTimestamps = (timestamps) =>{
+    return timestamps.split(" (")[0];
+}
+
 const formatUserProfile = (osuId) => {
   return `https://osu.ppy.sh/users/${osuId}`;
 };
@@ -33,4 +37,4 @@ const formatDate = (dateString) => {
   return formatted
 }
 
-export { formatLink, formatCardTitle, formatUserProfile, getBeatmapUrl , formatDate, calculatePassRates, calculateLNRates};
+export { formatLink, formatCardTitle, formatUserProfile, getBeatmapUrl , formatDate, calculatePassRates, calculateLNRates, formatTimestamps};
