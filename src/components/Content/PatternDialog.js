@@ -7,8 +7,6 @@ import {
   CardActions,
   IconButton,
   Dialog,
-  Button,
-  DialogActions,
   Link,
 } from "@mui/material";
 
@@ -18,7 +16,9 @@ import {
   formatLink,
   formatCardTitle,
   formatUserProfile,
-  formatDate
+  formatDate,
+  calculatePassRates, 
+  calculateLNRates
 } from "./patternHelper";
 
 import { changeLike, changeDislike, getPattern } from "../../service/patternService";
@@ -66,7 +66,7 @@ const PatternDialog = (props) => {
     <Dialog open={open} onClose={handleClose}>
       <Card className="bg-black f-full w-full flex-1">
         <CardHeader
-          // TODO: need open link in new tab, but this auto open all even without click
+          // need make it look like its clickeable
           title={
             <div onClick={openMapLink}>
               {formatCardTitle(props.data.beatmap)}
@@ -78,6 +78,12 @@ const PatternDialog = (props) => {
             <p>{"Pattern uploaded: " + formatDate(pattern.p_uploadDate)}</p>
             <p>{"Liked: " + pattern.likedBy.length}</p>
             <p>{"Disliked: " + pattern.dislikedBy.length}</p>
+            <p>{"Genre: " + pattern.beatmap.genre}</p>
+            <p>{"Language: " + pattern.beatmap.language}</p>
+            <p>{"BPM: " + pattern.beatmap.bpm}</p>
+            <p>{"Favorites: "+ pattern.beatmap.counts.favorites}</p>
+            <p>{"Success Rate: "+ calculatePassRates(pattern)}</p>
+            <p>{"LN ratio: "+calculateLNRates(pattern)}</p>
           </div>}
         />
         <CardMedia
@@ -112,9 +118,6 @@ const PatternDialog = (props) => {
           </IconButton>
         </CardActions>
       </Card>
-      <DialogActions disableSpacing className="flex justify-between">
-        <Button onClick={onClose}>X</Button>
-      </DialogActions>
     </Dialog>
   );
 };
