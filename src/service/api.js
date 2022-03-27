@@ -1,3 +1,5 @@
+import axios from "axios";
+axios.defaults.withCredentials = true;
 var apiHost = process.env.REACT_APP_API_HOST
 
 if (process.env.NODE_ENV === "production"){
@@ -10,4 +12,4 @@ const routes = {
     logout: `${apiHost}/auth/logout`
 }
 
-export default routes;
+export {routes, axios};

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Card } from "@mui/material";
 import { Pattern } from "./Pattern";
-import axios from "axios";
-import routes from "../../service/api";
+import { getPatterns } from "../../service/patternService";
 
 const Gallery = () => {
   const [patterns, setPatterns] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      axios.get(routes.pattern).then((res) => {
-        console.log(res);
-        setPatterns(res.data);
+      getPatterns().then((res) => {
+        setPatterns(res);
       });
     }
     fetchData();
