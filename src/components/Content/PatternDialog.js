@@ -37,6 +37,7 @@ import {
   formatDate,
   calculatePassRates,
   calculateLNRates,
+  formatTimestamps
 } from "./patternHelper";
 
 import { changeLike, changeDislike } from "../../service/patternService";
@@ -44,7 +45,6 @@ import { changeLike, changeDislike } from "../../service/patternService";
 const PatternDialog = (props) => {
   const { onClose, open, pattern: initPattern } = props;
   const [pattern, setPattern] = useState(initPattern);
-
   const openMapLink = () => {
     window.open(pattern.beatmapUrl, "_blank").focus();
   };
@@ -151,7 +151,7 @@ const PatternDialog = (props) => {
             <Typography variant="overline">
               Timestamps:{" "}
               <Link href={formatLink(pattern.osuTimestamps)}>
-                {pattern.osuTimestamps}
+                {formatTimestamps(pattern.osuTimestamps)}
               </Link>
             </Typography>
           </CardContent>
