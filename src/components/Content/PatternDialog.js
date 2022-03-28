@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Card,
   CardHeader,
@@ -36,6 +36,7 @@ import {
   formatDate,
   calculatePassRates,
   calculateLNRates,
+  formatTimestamps,
 } from "./patternHelper";
 
 import { changeLike, changeDislike } from "../../service/patternService";
@@ -48,27 +49,19 @@ const PatternDialog = (props) => {
   };
 
   const handleLike = () => {
-    changeLike(pattern._id).then(() => {
-      setPattern((pattern) => ({
-        ...pattern,
-        liked: pattern.liked ? false : true,
-        disliked: false,
-      }));
+    changeLike(pattern._id).then((pattern) => {
+      setPattern(pattern);
     });
   };
 
   const handleDislike = () => {
-    changeDislike(pattern._id).then(() => {
-      setPattern((pattern) => ({
-        ...pattern,
-        disliked: pattern.disliked ? false : true,
-        liked: false,
-      }));
+    changeDislike(pattern._id).then((pattern) => {
+      setPattern(pattern);
     });
   };
 
   return (
-    <Dialog open={open} onClose={() => onClose()}>
+    <Dialog open={open} onClose={() => onClose()} key={pattern._id}>
       <DialogContent style={{ margin: 0, padding: 0 }}>
         <Card className="bg-black f-full w-full flex-1">
           <CardHeader
@@ -149,7 +142,7 @@ const PatternDialog = (props) => {
             <Typography variant="overline">
               Timestamps:{" "}
               <Link href={formatLink(pattern.osuTimestamps)}>
-                {pattern.osuTimestamps}
+                {formatTimestamps(pattern.osuTimestamps)}
               </Link>
             </Typography>
           </CardContent>
@@ -183,12 +176,18 @@ const PatternDialog = (props) => {
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row" align="left">
-                        Liked / Disliked
+                        Liked
                       </TableCell>
                       <TableCell align="left">
-                        {pattern.likedBy.length +
-                          " / " +
-                          pattern.dislikedBy.length}{" "}
+                        {pattern.likedBy.length}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align="left">
+                        Disliked
+                      </TableCell>
+                      <TableCell align="left">
+                        {pattern.dislikedBy.length}
                       </TableCell>
                     </TableRow>
                     <TableRow>

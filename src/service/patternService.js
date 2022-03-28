@@ -32,7 +32,10 @@ const changeLike = (id) => {
   return new Promise((resolve, reject) => {
     axios
       .post(routes.pattern + `/${id}/like`)
-      .then(() => resolve(true))
+      .then(async () => {
+        const pattern = await getPattern(id);
+        resolve(pattern);
+      })
       .catch((error) => {
         console.error(error);
         reject(false);
@@ -45,6 +48,10 @@ const changeDislike = (id) => {
   return new Promise((resolve, reject) => {
     axios
       .post(routes.pattern + `/${id}/dislike`)
+      .then(async () => {
+        const pattern = await getPattern(id);
+        resolve(pattern);
+      })
       .then(() => resolve(true))
       .catch(() => reject(false));
   });
