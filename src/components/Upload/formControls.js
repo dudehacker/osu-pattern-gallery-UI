@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import {routes} from "../../service/api";
+import { routes } from "../../service/api";
 
 const PostForm = async (values, successCallback, errorCallback) => {
   axios

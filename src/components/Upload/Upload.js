@@ -1,71 +1,37 @@
 import React, { useState } from "react";
 import { useFormControls } from "./formControls";
-import Cookies from "js-cookie";
-import CloseIcon from "@mui/icons-material/Close";
+import { useStore } from "../../store";
 import {
   Dialog,
   DialogTitle,
   TextField,
   DialogActions,
   Button,
-  AlertTitle,
-  Alert,
-  IconButton,
   Fab,
   //   Modal,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-const inputFieldValues = [
-  {
-    name: "beatmapUrl",
-    label: "Map Link",
-    id: "beatmapUrl",
-  },
-  {
-    name: "imageUrl",
-    label: "Image Link",
-    id: "imageUrl",
-  },
-  {
-    name: "osuTimestamps",
-    label: "Timestamps",
-    id: "osuTimestamps",
-  },
-  {
-    name: "description",
-    label: "Description",
-    id: "description",
-    multiline: true,
-    maxRows: 20,
-  },
-];
-
-const Upload = (props) => {
+const Upload = () => {
+  const { setGlobalAlert, patternUploadFields } = useStore.getState();
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
   const [open, setOpen] = useState(false);
-  const [notLoggedIn, setNotLoggedIn] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
-  const [alertMsg, setAlertMsg] = useState(null);
-
-  const [error, openError] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleClickOpen = () =>
-    Cookies.get("username") ? setOpen(!open) : setNotLoggedIn(!notLoggedIn);
+  const handleOpen = () =>
+    isLoggedIn
+      ? setOpen(true)
+      : setGlobalAlert("error", "You must be logged in to upload a pattern");
 
   const handleAlertOpen = (errMsg) => {
     if (errMsg) {
-      setOpenAlert(true);
-      setAlertMsg(errMsg);
+      setGlobalAlert("error", errMsg);
     } else {
-      console.log("upload success");
-      setOpenAlert(false);
-      setAlertMsg(null);
+      setGlobalAlert("success", "You have succcessfuly uploaded the pattern!");
       setOpen(false);
-      props.handleUpload("You have succcessfuly uploaded the pattern!");
     }
   };
 
@@ -86,36 +52,16 @@ const Upload = (props) => {
       <Fab
         variant="contained"
         color="primary"
-        onClick={handleClickOpen}
+        onClick={handleOpen}
         style={style}
         aria-label="upload"
       >
         <AddIcon />
       </Fab>
-      <Dialog onClose={handleClickOpen} open={open}>
+      <Dialog onClose={handleOpen} open={open}>
         <DialogTitle>Submit New Pattern</DialogTitle>
-        {openAlert ? (
-          <Alert
-            severity="error"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setOpenAlert(false);
-                }}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            <AlertTitle>Error</AlertTitle>
-            {alertMsg}
-          </Alert>
-        ) : null}
         <form autoComplete="off" onSubmit={handleFormSubmit}>
-          {inputFieldValues.map((inputFieldValue, index) => {
+          {patternUploadFields.map((inputFieldValue, index) => {
             return (
               <TextField
                 key={index}
@@ -126,7 +72,6 @@ const Upload = (props) => {
                 helperText={errors[inputFieldValue.name]}
                 multiline={inputFieldValue.multiline ?? false}
                 fullWidth
-                // rows={inputFieldValue.rows ?? 1}
                 autoComplete="none"
                 {...(errors[inputFieldValue.name] && {
                   error: true,
@@ -143,11 +88,6 @@ const Upload = (props) => {
             <Button onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </form>
-      </Dialog>
-      <Dialog onClose={handleClickOpen} open={notLoggedIn}>
-        <Alert severity="error">
-          You must be logged in to upload a pattern!
-        </Alert>
       </Dialog>
     </div>
   );

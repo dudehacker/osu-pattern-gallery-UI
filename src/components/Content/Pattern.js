@@ -2,11 +2,21 @@ import React, { useState } from "react";
 import { Card, CardMedia } from "@mui/material";
 import { PatternDialog } from "./PatternDialog";
 
+import { getPattern } from "../../service/patternService";
+
 const Pattern = (props) => {
   const [open, setOpen] = useState(false);
+  const [pattern, setPattern] = useState(null);
 
+  // Make an API call to get the pattern everytime the dialog is opened
   const handleClickOpen = () => {
-    setOpen(true);
+    getPattern(props.data._id)
+      .then((pattern) => {
+        setPattern(pattern);
+      })
+      .then(() => {
+        setOpen(true);
+      });
   };
 
   const handleClose = () => {
@@ -21,7 +31,14 @@ const Pattern = (props) => {
         alt="pattern-id"
         onClick={handleClickOpen}
       />
-      <PatternDialog data={props.data} open={open} onClose={handleClose} />
+      {pattern && (
+        <PatternDialog
+          pattern={pattern}
+          open={open}
+          onClose={handleClose}
+          setPattern={setPattern}
+        />
+      )}
     </Card>
   );
 };

@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useStore } from "../../store";
 import { Grid, Card } from "@mui/material";
 import { Pattern } from "./Pattern";
-import { getPatterns } from "../../service/patternService";
 
 const Gallery = () => {
-  const [patterns, setPatterns] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      getPatterns().then((res) => {
-        setPatterns(res);
-      });
-    }
-    fetchData();
-  }, []);
+  const patterns = useStore((state) => state.patterns);
 
   return (
     <Card className="bg-black f-full w-full flex-1 flex pt-4">

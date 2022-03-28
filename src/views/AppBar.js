@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from "react";
+import React from "react";
+import { useStore } from "../store";
 import {
   AppBar as MuiAppBar,
   Toolbar,
@@ -7,14 +8,13 @@ import {
   Avatar,
   Typography,
 } from "@mui/material";
-import {routes} from "../service/api";
+import { routes } from "../service/api";
 import Cookies from "js-cookie";
 
 import { LogoutIcon, LoginIcon } from "../components/Icons";
 
 const AppBar = () => {
-  const [username, setUserName] = useState(Cookies.get("username"));
-  const [avatar, setAvatar] = useState(Cookies.get("avatar"));
+  const { username, avatar } = useStore((state) => state.user);
 
   const handleAccess = () => {
     if (username) {
