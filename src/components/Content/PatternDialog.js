@@ -18,7 +18,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Paper,
 } from "@mui/material";
@@ -42,8 +41,7 @@ import {
 import { changeLike, changeDislike } from "../../service/patternService";
 
 const PatternDialog = (props) => {
-  const { onClose, open, pattern: initPattern } = props;
-  const [pattern, setPattern] = useState(initPattern);
+  const { onClose, open, pattern, setPattern } = props;
 
   const openMapLink = () => {
     window.open(pattern.beatmapUrl, "_blank").focus();

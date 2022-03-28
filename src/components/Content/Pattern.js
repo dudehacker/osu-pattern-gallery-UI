@@ -12,6 +12,7 @@ const Pattern = (props) => {
   const handleClickOpen = () => {
     getPattern(props.data._id)
       .then((pattern) => {
+        console.log(pattern);
         setPattern(pattern);
       })
       .then(() => {
