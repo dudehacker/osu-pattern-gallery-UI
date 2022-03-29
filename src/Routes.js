@@ -7,7 +7,7 @@ const Routes = () => {
   return (
     <RoutesContainer>
       <Route path="/" element={<App />} />
-      {/* <Route path="/callback" element={<Authorize />} /> */}
+      <Route path="/callback" element={<Authorize />} />
     </RoutesContainer>
   );
 };
