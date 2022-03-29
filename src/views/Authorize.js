@@ -1,11 +1,15 @@
 import { useSearchParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Authorize = () => {
   const [searchParams] = useSearchParams();
-  const code = searchParams?.get("code");
-  console.log(code);
+  const avatar = searchParams?.get("avatar");
+  Cookies.set('avatar', avatar)
 
-  return <div />;
+  const username = searchParams?.get("username");
+  Cookies.set('username', username)
+
+  window.location = '/';
 };
 
 export { Authorize };
